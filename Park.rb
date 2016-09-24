@@ -1,6 +1,6 @@
 
 require 'twilio-ruby'
-require 'sinatra'  #AIzaSyBJi0e7HcPXnom-skb5b_Sy7KVfrLEiYgY 
+require 'sinatra'  #AIzaSyBJi0e7HcPXnom-skb5b_Sy7KVfrLEiYgY   https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=parking&name=cruise&key=AIzaSyBJi0e7HcPXnom-skb5b_Sy7KVfrLEiYgY
 
 require 'net/http'
 require 'json'
@@ -21,21 +21,19 @@ post '/sms' do
 	response1 = response.to_s
 	lat = response1[response1.index('lat')..response1.index('lat')+16]
 	lat = lat[6..15]
-	long = response1[response1.index('lng')..response1.index('lng')+16]
-	long = long[6..15]
+	lat= lat.to_s
+	lng = response1[response1.index('lng')..response1.index('lng')+16]
+	lng = lng[6..15]
+	lng =lng.to_s
 	#response3 = lat+" "+long
 
-	url1="http://api.parkwhiz.com/search/?lat=#{lat}&lng=#{long}&start=1474749188&end=1474759988&key=b8d464c0fcd86c5d3d83fc41ef98eb07"
-
-
-	uri1=URI(url1)
-	response2 = Net::HTTP.get(uri1)
-	response2 = JSON.parse(response2)
+	
+	
 
 	twiml = Twilio::TwiML::Response.new do |r|
-		r.Message(response2)
+		r.Message(lat)
 		r.Body(lat)
-		r.Body(long)
+		r.Body(lng)
 	end
 	content_type 'text/xml'
 	twiml.text
