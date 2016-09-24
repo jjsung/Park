@@ -17,6 +17,8 @@ post '/sms' do
 	uri = URI(url)
 	response = Net::HTTP.get(uri)
 	response1 = JSON.parse(response)
+	response1 = response1["results"][0]
+	
 	
 	twiml = Twilio::TwiML::Response.new do |r|
 		r.Message(response1.to_s)
